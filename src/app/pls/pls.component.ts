@@ -2,12 +2,11 @@ import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { PlsPhysicsService } from '../services/pls-physics.service';
 import { DrawingService } from '../services/drawing.service';
 import { combineLatest } from 'rxjs';
-import { VerticalSliderComponent } from '../vertical-slider/vertical-slider.component';
 
 @Component({
   selector: 'app-pls',
   standalone: true,
-  imports: [VerticalSliderComponent],
+  imports: [],
   templateUrl: './pls.component.html',
   styleUrls: ['./pls.component.scss']
 })
@@ -44,10 +43,14 @@ export class PlsComponent implements OnInit {
   public roundedSinkRate: string = this.sinkRate.toFixed(2);
   public roundedForwardSpeed: string = this.forwardSpeed.toFixed(2);
 
+  // Pause state
+  public paused: boolean = false;
+
   constructor(private physicsService: PlsPhysicsService, private drawingService: DrawingService) {}
 
   ngOnInit() {
     this.ctx = this.canvas.nativeElement.getContext('2d');
+    this.setupEventListeners(); // Set up event listeners for keypress
 
     if (this.ctx) {
       // Initialize wind settings
@@ -78,9 +81,29 @@ export class PlsComponent implements OnInit {
     }
   }
 
-  animate(timestamp: number) {
-    if (this.landed) return;
+  setupEventListeners() {
+    // Listen for space bar key press
+    window.addEventListener('keydown', (event) => {
+      if (event.code === 'Space') {
+        this.togglePause();
+      }
+    });
+  }
 
+  togglePause() {
+    // Toggle the paused state
+    this.paused = !this.paused;
+
+    if (!this.paused && !this.landed) {
+      // If it's not paused and hasn't landed, continue the animation
+      this.lastTimestamp = performance.now();
+      requestAnimationFrame((timestamp) => this.animate(timestamp));
+    }
+  }
+
+  animate(timestamp: number) {
+    if (this.landed || this.paused) return;
+    
     const elapsed = timestamp - this.lastTimestamp; // Time elapsed since the last frame in milliseconds
     this.lastTimestamp = timestamp;
 
@@ -120,6 +143,7 @@ export class PlsComponent implements OnInit {
     this.physicsService.setBrakeInput(this.brakeValue);
     this.getBrakeAcceleratorInputs();
   }
+  
 
   onWindStrengthChange(event: any) {
     this.windStrength = +event.target.value; // Update wind strength
@@ -132,11 +156,11 @@ export class PlsComponent implements OnInit {
   }
 
   getBrakeAcceleratorInputs() {
-    if (this.brakeValue >= 0) {
-      this.brakeInput = this.brakeValue;
+    if (this.brakeValue <= 0) {
+      this.brakeInput = -this.brakeValue;
       this.acceleratorInput = 0;
-    } else if (this.brakeValue <= 0) {
-      this.acceleratorInput = -this.brakeValue;
+    } else if (this.brakeValue >= 0) {
+      this.acceleratorInput = this.brakeValue;
       this.brakeInput = 0;
     }
   }

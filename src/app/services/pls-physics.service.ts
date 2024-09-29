@@ -22,8 +22,8 @@ export class PlsPhysicsService {
   private initialForwardSpeed = this.forwardSpeedBrake0; // Store initial forward speed
 
   setBrakeInput(brakeInput: number) {
-    const newSinkRate = this.calculateSinkRate(brakeInput);
-    let newForwardSpeed = this.calculateForwardSpeed(brakeInput);
+    const newSinkRate = this.calculateSinkRate(-brakeInput);
+    let newForwardSpeed = this.calculateForwardSpeed(-brakeInput);
     this.initialForwardSpeed = newForwardSpeed; // Store initial forward speed based on brake input
     this.sinkRate.next(newSinkRate);
     this.applyWindEffect(); // Apply wind effect on the initial forward speed

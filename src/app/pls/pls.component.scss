@@ -5,6 +5,7 @@ canvas {
 .simulator-container {
   position: relative;
   display: flex;
+  flex-direction: row;
   justify-content: center;
   align-items: center;
   height: 100%;
@@ -22,6 +23,26 @@ canvas {
   align-items: center;
   z-index: 1; /* Ensure overlay is on top */
 }
+
+.slider-container {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  //margin-right: 1700px;
+}
+
+.slider-container label {
+}
+
+.vertical-slider {
+  transform: rotate(-90deg); 
+  width: 300px;
+  height: 40px;
+  margin-left: 120px;
+}
+
 
 .controls-container {
   background-color: white;
@@ -75,46 +96,3 @@ canvas {
   margin: 5px 0;
 }
 
-
-
-
-
-// body {
-//   margin: 0; 
-//   padding: 0; 
-//   height: 100vh; 
-//   display: flex;
-//   justify-content: center;
-//   align-items: center; 
-//   background-color: •#35363a;
-// }
-
-
-// .slider-container {
-//   position: relative;
-//   width: 20px; 
-//   height: 300px;
-// }
-
-// .slider-container .slider{
-//   position: absolute;
-//   z-index: 3;
-//   left: 50%;
-//   top: 50%;
-//   -webkit-appearance: none;
-//   margin: 0;
-//   width: 300px;
-//   height: 20px;
-//   outline: none;
-//   transform: rotate(-90deg) translate(-50%, -50%);
-//   transform-origin: 0 0;
-// }
-
-
-
-// .Slider-container .slider::-webkit-slider-thumb {
-//   -webkit-appearance: none;
-//   width: 30px; 
-//   height: 30px;
-//   border: 8px solid #3e3e3e;
-// }

@@ -10,7 +10,7 @@
           min="0" 
           max="10" 
           [value]="windStrength" 
-          class="vertical-slider" 
+          class="horizontal-slider" 
           (input)="onWindStrengthChange($event)">
 
         <label for="windDirectionToggle">Wind Direction: </label>
@@ -24,25 +24,20 @@
     </div>
   }
 
+
   <div class="slider-container">
-    <label for="brakeSlider">Brake Input: {{ brakeValue }}%</label>
+    <label for="brakeSlider" class="brake-label">Brake Input: {{ -brakeValue }}%</label>
     <input 
       id="brakeSlider"
       type="range" 
       min="-100" 
       max="100" 
       [value]="brakeValue" 
-      class="vertical-slider" 
+      class="vertical-slider slider" 
       (input)="onBrakeInputChange($event)">
   </div>
 
-  <!-- <app-vertical-slider
-  [min]="-100"
-  [max]="100"
-  [value]="brakeValue"
-  label="Brake Input"
-  (valueChange)="onBrakeInputChange($event)">
-  </app-vertical-slider> -->
+
 
   <div class="info-container">
     <div>Forward Speed: {{ roundedForwardSpeed }} m/s</div>
